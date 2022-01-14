@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\henri\\RiderProjects\\ShowAPI\\ShowAPI\\ShowAPI.csproj": {}
+    "V:\\Documents\\RiderProjects\\OnlineStoreAPI\\OnlineStoreAPI\\OnlineStoreAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\henri\\RiderProjects\\ShowAPI\\ShowAPI\\ShowAPI.csproj": {
+    "V:\\Documents\\RiderProjects\\OnlineStoreAPI\\OnlineStoreAPI\\OnlineStoreAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\henri\\RiderProjects\\ShowAPI\\ShowAPI\\ShowAPI.csproj",
-        "projectName": "ShowAPI",
-        "projectPath": "C:\\Users\\henri\\RiderProjects\\ShowAPI\\ShowAPI\\ShowAPI.csproj",
-        "packagesPath": "C:\\Users\\henri\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\henri\\RiderProjects\\ShowAPI\\ShowAPI\\obj\\",
+        "projectUniqueName": "V:\\Documents\\RiderProjects\\OnlineStoreAPI\\OnlineStoreAPI\\OnlineStoreAPI.csproj",
+        "projectName": "OnlineStoreAPI",
+        "projectPath": "V:\\Documents\\RiderProjects\\OnlineStoreAPI\\OnlineStoreAPI\\OnlineStoreAPI.csproj",
+        "packagesPath": "C:\\Users\\Soni\\.nuget\\packages\\",
+        "outputPath": "V:\\Documents\\RiderProjects\\OnlineStoreAPI\\OnlineStoreAPI\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\henri\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\Soni\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
@@ -38,10 +38,6 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
-            "MySqlConnector": {
-              "target": "Package",
-              "version": "[2.1.2, )"
-            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.2.3, )"
@@ -65,7 +61,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.100\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.101\\RuntimeIdentifierGraph.json"
         }
       }
     }
