@@ -15,8 +15,13 @@ public class ProductController : Controller
     {
         _productService = productService;
     }
-    
-    
+
+
+    [HttpGet]
+    public Product GetProduct(int id)
+    {
+        return _productService.GetProduct(id);
+    }
     
     
     [HttpGet("all")]
