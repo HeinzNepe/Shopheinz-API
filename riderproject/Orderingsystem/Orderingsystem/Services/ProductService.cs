@@ -24,6 +24,7 @@ public class ProductService : IProductService
         {
             product.Id = (int) reader["id"];
             product.Name = (string) reader["name"];
+            product.Description = (string) reader["description"];
             product.Price = (float) reader["price"];
             product.Stock = (int) reader["stock"];
             product.ImageUrl = (string) reader["image_url"];
@@ -49,8 +50,9 @@ public class ProductService : IProductService
         {
             list.Add(new Product
             {
-                Id = (int) reader["product_id"],
+                Id = (int) reader["id"],
                 Name = (string) reader["name"],
+                Description = (string) reader["description"],
                 Price = (float) reader["price"],
                 Stock = (int) reader["stock"],
                 ImageUrl = (string) reader["image_url"]
