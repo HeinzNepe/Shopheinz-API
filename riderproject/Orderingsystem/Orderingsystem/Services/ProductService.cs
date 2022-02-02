@@ -22,7 +22,7 @@ public class ProductService : IProductService
         using var reader = command.ExecuteReader();
         while (reader.Read())
         {
-            product.Id = (int) reader["id"];
+            product.Id = (int) reader["pid"];
             product.Name = (string) reader["name"];
             product.Description = (string) reader["description"];
             product.Price = (float) reader["price"];
@@ -50,7 +50,7 @@ public class ProductService : IProductService
         {
             list.Add(new Product
             {
-                Id = (int) reader["id"],
+                Id = (int) reader["pid"],
                 Name = (string) reader["name"],
                 Description = (string) reader["description"],
                 Price = (float) reader["price"],
