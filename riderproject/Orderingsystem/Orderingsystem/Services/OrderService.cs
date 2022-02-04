@@ -13,10 +13,12 @@ public class OrderService : IOrderService
         var order = new Order();
         
         using var connection = new MySqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
-        const string commandString = "select * from online_store.orders,online_store.user,online_store.products,online_store.addresses,online_store.postal_places, online_store.credentials where orders.ouid = user.uuid and user.uusername = credentials.username and product_id = products.pid and orders.address_id = addresses.aid and addresses.postal_nr = postal_places.postnr and orders.oid = @id";
+        const string commandString = "select * from online_store.orders,online_store.user,online_store.addresses,online_store.postal_places, online_store.credentials where orders.ouid = user.uuid and user.uusername = credentials.username and orders.address_id = addresses.aid and addresses.postal_nr = postal_places.postnr and orders.oid = @id";
         var command = new MySqlCommand(commandString, connection);
-
+        const string productsCommandString = "select products.*, quantity from products, orders_products, orders where orders.oid = orders_products.orders_order_id and products.pid = orders_products.products_product_id and orders.oid = @id";
+        var productsCommand = new MySqlCommand(productsCommandString, connection);
         command.Parameters.AddWithValue("@id", id);
+        productsCommand.Parameters.AddWithValue("@id", id);
         
         connection.Open();
         
@@ -26,6 +28,7 @@ public class OrderService : IOrderService
             order.Id = (int) reader["oid"];
             order.User = new User
             {
+                // ID in the User table
                 Id = (int) reader["uuid"],
                 FirstName = (string) reader["first_name"],
                 LastName = (string) reader["last_name"],
@@ -39,17 +42,10 @@ public class OrderService : IOrderService
                     AccessLevel = (int) reader["access_level"]
                 }
             };
-            order.Product = new Product
-            {
-                Id = (int) reader["pid"],
-                Name = (string) reader["name"],
-                Description = (string) reader["description"],
-                Price = (float) reader["price"],
-                Stock = (int) reader["stock"],
-                ImageUrl = (string) reader["image_url"]
-            };
+            
             order.Address = new Address
             {
+                // ID in the adress table
                 Id = (int) reader["aid"],
                 AddressLine = (string) reader["address_line"],
                 PostalNumber = new PostalNumber
@@ -63,6 +59,29 @@ public class OrderService : IOrderService
             order.OrderTime = (DateTime) reader["order_time"];
         }
 
+        reader.Close();
+        
+        var products = new List<OrderProduct>();
+        using var productsReader = productsCommand.ExecuteReader();
+        while (productsReader.Read())
+        {
+            products.Add(new OrderProduct
+            {
+                Product = new Product
+                {
+                    Id = (int) productsReader["pid"],
+                    Name = (string) productsReader["name"],
+                    Description = (string) productsReader["description"],
+                    Stock = (int) productsReader["stock"],
+                    Price = (float) productsReader["price"],
+                    ImageUrl = (string) productsReader["image_url"]
+                },
+                Quantity = (int) productsReader["quantity"]
+            });
+        }
+
+        order.Products = products;
+        
         return order;
     }
 }

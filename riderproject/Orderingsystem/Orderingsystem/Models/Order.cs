@@ -7,7 +7,7 @@ public class Order
     
     public User User { get; set; } = null!;
     
-    public Product Product { get; set; } = null!;
+    public IEnumerable<OrderProduct> Products { get; set; } = null!;
     
     public Address Address { get; set; } = null!;
     
