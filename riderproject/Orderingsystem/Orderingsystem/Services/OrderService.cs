@@ -87,4 +87,57 @@ public class OrderService : IOrderService
         
         return order;
     }
+
+    public bool CreateOrder(int userId, int addressId, float totalPrice)
+    {
+        var order = new Order();
+        
+        using var connection = new MySqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
+        const string commandString = "insert into online_store.orders (ouid, address_id, total_price) values (@userId, @addressId, @totalPrice)";
+        var command = new MySqlCommand(commandString, connection);
+        command.Parameters.AddWithValue("@userId", userId);
+        command.Parameters.AddWithValue("@addressId", addressId);
+        command.Parameters.AddWithValue("@totalPrice", totalPrice);
+
+
+
+        try
+        {
+            connection.Open();
+            command.ExecuteNonQuery();
+            return true;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return false;
+        }
+
+    }
+
+    public bool AddProductToOrder(int orderId, int productId, int quantity)
+    {
+        var order = new Order();
+        
+        using var connection = new MySqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
+        const string commandString = "insert into online_store.orders_products (orders_order_id, products_product_id, quantity) values (@orderId, @productId, @quantity)";
+        var command = new MySqlCommand(commandString, connection);
+        command.Parameters.AddWithValue("@orderId", orderId);
+        command.Parameters.AddWithValue("@productId", productId);
+        command.Parameters.AddWithValue("@quantity", quantity);
+
+
+
+        try
+        {
+            connection.Open();
+            command.ExecuteNonQuery();
+            return true;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return false;
+        }
+    }
 }
