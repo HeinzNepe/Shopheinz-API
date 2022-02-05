@@ -61,10 +61,13 @@ public class OrderService : IOrderService
 
         reader.Close();
         
+        // Makes a list for all the products in the order
         var products = new List<OrderProduct>();
+        // Makes a new reader
         using var productsReader = productsCommand.ExecuteReader();
         while (productsReader.Read())
         {
+            // Adds object to list 
             products.Add(new OrderProduct
             {
                 Product = new Product
