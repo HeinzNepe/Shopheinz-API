@@ -23,5 +23,11 @@ public class AuthController : Controller
     {
         return _authService.VerifyCredentials(user, pass);
     }
+
+    [HttpPost]
+    public bool UpdatePass(string user, string pass, string newPass)
+    {
+        return _authService.UpdatePass(user, pass, newPass);
+    }
     
 }
