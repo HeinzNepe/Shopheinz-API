@@ -16,9 +16,9 @@ public class UserController : Controller
     }
 
     [HttpPost("create")]
-    public bool CreateUser(string firstName, string lastName, string username, string email, int phoneNumber, string pass, int accessLevel)
+    public bool CreateUser(string firstName, string lastName, string username, string email, int phoneNumber, string pass, string pfp, int accessLevel)
     {
-        return _userService.CreateUser(firstName, lastName, username, email, phoneNumber, pass, accessLevel);
+        return _userService.CreateUser(firstName, lastName, username, email, phoneNumber, pass, pfp, accessLevel);
     }
 
     [HttpDelete("delete")]

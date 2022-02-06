@@ -16,13 +16,12 @@ public class UserService : IUserService
     }
     
     
-    public bool CreateUser(string firstName, string lastName, string username, string email, int phoneNumber, string pass,
-        int accessLevel)
+    public bool CreateUser(string firstName, string lastName, string username, string email, int phoneNumber, string pass, string pfp, int accessLevel)
     {
         
         using var connection = new MySqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
         const string credentialsString = "insert into online_store.credentials (username, password, token, access_level) values (@username, @pass, @token, @access_level)";
-        const string usersString = "insert into online_store.user (email, phone_number, first_name, last_name, uusername) values (@email, @phoneNumber, @firstName, @lastName, @username)";
+        const string usersString = "insert into online_store.user (email, phone_number, first_name, last_name,pfp, uusername) values (@email, @phoneNumber, @firstName, @lastName, @pfp, @username)";
         var credentialsCommand = new MySqlCommand(credentialsString, connection);
         var userCommand = new MySqlCommand(usersString, connection);
         credentialsCommand.Parameters.AddWithValue("@username", username);
@@ -34,6 +33,7 @@ public class UserService : IUserService
         userCommand.Parameters.AddWithValue("@phoneNumber", phoneNumber);
         userCommand.Parameters.AddWithValue("@firstName", firstName);
         userCommand.Parameters.AddWithValue("@lastName", lastName);
+        userCommand.Parameters.AddWithValue("@pfp", pfp);
         
         
 
