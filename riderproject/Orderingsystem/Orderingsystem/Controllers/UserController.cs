@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Orderingsystem.Interfaces;
+using Orderingsystem.Models;
 
 namespace Orderingsystem.Controllers;
 
@@ -15,6 +16,12 @@ public class UserController : Controller
         _userService = userService;
     }
 
+    [HttpGet("user")]
+    public User GetUser(int id)
+    {
+        return _userService.GetUser(id);
+    }
+    
     [HttpPost("create")]
     public bool CreateUser(string firstName, string lastName, string username, string email, int phoneNumber, string pass, string pfp, int accessLevel)
     {

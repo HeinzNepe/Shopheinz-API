@@ -6,6 +6,48 @@ using ConfigurationManager = System.Configuration.ConfigurationManager;
 
 public class UserService : IUserService
 {
+    
+    public User GetUser(int id)
+    {
+        var user = new User();
+        
+        using var connection = new MySqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
+        const string commandString = "select * from online_store.user, online_store.credentials where user.uusername = credentials.username and uuid = @id";
+        var command = new MySqlCommand(commandString, connection);
+        command.Parameters.AddWithValue("@id", id);
+        
+
+
+        
+        
+        connection.Open();
+        using var reader = command.ExecuteReader();
+        while (reader.Read())
+        {
+            // ID in the User table
+            user.Id = (int) reader["uuid"];
+            user.FirstName = (string) reader["first_name"];
+            user.LastName = (string) reader["last_name"];
+            user.Email = (string) reader["email"];
+            user.PhoneNumber = (int) reader["phone_number"];
+            user.Credentials = new Credentials
+            {
+                Username = (string) reader["username"],
+                Password = (string) reader["password"],
+                Token = (string) reader["token"],
+                AccessLevel = (int) reader["access_level"]
+            };
+        }
+
+        return user;
+
+    }
+
+    
+    
+    
+    
+    
     private static readonly Random Random = new Random();
 
     public static string RandomString(int length)
@@ -15,7 +57,7 @@ public class UserService : IUserService
             .Select(s => s[Random.Next(s.Length)]).ToArray());
     }
     
-    
+   
     public bool CreateUser(string firstName, string lastName, string username, string email, int phoneNumber, string pass, string pfp, int accessLevel)
     {
         
