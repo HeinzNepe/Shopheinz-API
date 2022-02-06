@@ -45,7 +45,7 @@ public class OrderService : IOrderService
             
             order.Address = new Address
             {
-                // ID in the adress table
+                // ID in the address table
                 Id = (int) reader["aid"],
                 AddressLine = (string) reader["address_line"],
                 PostalNumber = new PostalNumber
@@ -70,6 +70,7 @@ public class OrderService : IOrderService
             // Adds object to list 
             products.Add(new OrderProduct
             {
+                OrderId = order.Id,
                 Product = new Product
                 {
                     Id = (int) productsReader["pid"],
@@ -87,7 +88,104 @@ public class OrderService : IOrderService
         
         return order;
     }
+    
+    
+    
+    
+    
+    
+    
 
+    public IEnumerable<Order> GetUserOrders(int id)
+    {
+        var products = new List<OrderProduct>();
+        var orders = new List<Order>();
+        
+        using var connection = new MySqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
+        
+        const string selectProduct = "select products.*, quantity, oid from products, orders_products, orders where orders.oid = orders_products.orders_order_id and products.pid = orders_products.products_product_id and ouid = @id";
+        var productCommand = new MySqlCommand(selectProduct, connection);
+        productCommand.Parameters.AddWithValue("@id", id);
+
+        const string selectOrder = "select * from online_store.orders,online_store.user,online_store.addresses,online_store.postal_places,online_store.credentials where orders.ouid = user.uuid and user.uusername = credentials.username and orders.address_id = addresses.aid and addresses.postal_nr = postal_places.postnr and user.uuid = @id";
+        var orderCommand = new MySqlCommand(selectOrder, connection);
+        orderCommand.Parameters.AddWithValue("@id", id);
+        
+        connection.Open();
+
+        using var productsReader = productCommand.ExecuteReader();
+        while (productsReader.Read())
+        {
+            products.Add(new OrderProduct()
+            {
+                OrderId = (int) productsReader["oid"],
+                Product = new Product
+                {
+                    Id = (int) productsReader["pid"],
+                    Name = (string) productsReader["name"],
+                    Description = (string) productsReader["description"],
+                    Stock = (int) productsReader["stock"],
+                    Price = (float) productsReader["price"],
+                    ImageUrl = (string) productsReader["image_url"]
+                },
+                Quantity = (int) productsReader["quantity"]
+            });
+        }
+        
+        productsReader.Close();
+        using var ordersReader = orderCommand.ExecuteReader();
+        while (ordersReader.Read())
+        {
+            var orderId = (int) ordersReader["oid"];
+            orders.Add(new Order
+            {
+                Id = orderId,
+                    User = new User
+                     {
+                         // ID in the User table
+                         Id = (int) ordersReader["uuid"],
+                         FirstName = (string) ordersReader["first_name"],
+                         LastName = (string) ordersReader["last_name"],
+                         Email = (string) ordersReader["email"],
+                         PhoneNumber = (int) ordersReader["phone_number"],
+                         Credentials = new Credentials
+                         {
+                            Username = (string) ordersReader["username"],
+                            Password = (string) ordersReader["password"],
+                            Token = (string) ordersReader["token"],
+                            AccessLevel = (int) ordersReader["access_level"]
+                         }
+                     },
+                    
+                    Products = products.Where(p => p.OrderId == orderId),
+                    
+                    Address = new Address
+                    {
+                        // ID in the address table
+                        Id = (int) ordersReader["aid"],
+                        AddressLine = (string) ordersReader["address_line"],
+                        PostalNumber = new PostalNumber
+                        {
+                            Number = (int) ordersReader["postnr"],
+                            Place = (string) ordersReader["post_place"]
+                        },
+                        Country = (string) ordersReader["country"]
+                    },
+                    TotalPrice = (float) ordersReader["total_price"],
+                    OrderTime = (DateTime) ordersReader["order_time"],
+            });    
+        }
+        
+        return orders;
+    }   
+
+    
+    
+    
+    
+    
+    
+    
     public bool CreateOrder(int userId, int addressId, float totalPrice)
     {
         var order = new Order();
