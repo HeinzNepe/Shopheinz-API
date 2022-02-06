@@ -20,4 +20,10 @@ public class UserController : Controller
     {
         return _userService.CreateUser(firstName, lastName, username, email, phoneNumber, pass, accessLevel);
     }
+
+    [HttpDelete("delete")]
+    public bool DeleteUser(string username)
+    {
+        return _userService.DeleteUser(username);
+    }
 }

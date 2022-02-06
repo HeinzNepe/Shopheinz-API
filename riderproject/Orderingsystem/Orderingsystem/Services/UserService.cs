@@ -51,6 +51,29 @@ public class UserService : IUserService
         }
         return true;
     }
-    
 
+    public bool DeleteUser(string username)
+    {
+        var order = new Order();
+        
+        using var connection = new MySqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
+        const string commandString = "delete from online_store.user where uusername = @username; delete from online_store.credentials where username = @username";
+        var command = new MySqlCommand(commandString, connection);
+        command.Parameters.AddWithValue("@username", username);
+        
+
+
+
+        try
+        {
+            connection.Open();
+            command.ExecuteNonQuery();
+            return true;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return false;
+        }
+    }
 }
