@@ -42,4 +42,10 @@ public class OrderController : Controller
     {
         return _orderService.AddProductToOrder(orderId, productId, quantity);
     }
+
+    [HttpDelete("cancel")]
+    public bool DeleteOrder(int orderId)
+    {
+        return _orderService.DeleteOrder(orderId);
+    }
 }

@@ -30,6 +30,7 @@ public class UserService : IUserService
             user.LastName = (string) reader["last_name"];
             user.Email = (string) reader["email"];
             user.PhoneNumber = (int) reader["phone_number"];
+            user.pfp = (string) reader["pfp"];
             user.Credentials = new Credentials
             {
                 Username = (string) reader["username"],
@@ -96,8 +97,6 @@ public class UserService : IUserService
 
     public bool DeleteUser(string username)
     {
-        var order = new Order();
-        
         using var connection = new MySqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
         const string commandString = "delete from online_store.user where uusername = @username; delete from online_store.credentials where username = @username";
         var command = new MySqlCommand(commandString, connection);

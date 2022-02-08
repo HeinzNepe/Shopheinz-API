@@ -9,10 +9,11 @@
 //  GetUserOrder(id)
 //  CreateOrder(uid, addressId, totalPrice)
 
-
 // ProductController:
 //  GetProduct(id)
 //  GetAllProducts()
+
+// UserController:
 //  GetUser(id)
 //  CreateUser(firstName, lastName, username, email, pass, pfp, accessLevel)
 //  DeleteUser(username)

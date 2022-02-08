@@ -14,5 +14,6 @@ public class Order
     public float TotalPrice { get; set; }
     
     public DateTime OrderTime { get; set; }
+    public int Status { get; set; }
     
 }
