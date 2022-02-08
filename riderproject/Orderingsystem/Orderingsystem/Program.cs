@@ -1,3 +1,27 @@
+// What do the what
+
+// AuthController:
+//  Verify credentials(user, pass)
+//  Update password(user, pass, newPass)
+
+// OrderController:
+//  GetOrder(id)
+//  GetUserOrder(id)
+//  CreateOrder(uid, addressId, totalPrice)
+
+
+// ProductController:
+//  GetProduct(id)
+//  GetAllProducts()
+//  GetUser(id)
+//  CreateUser(firstName, lastName, username, email, pass, pfp, accessLevel)
+//  DeleteUser(username)
+
+
+
+
+
+
 using System.Collections.Immutable;
 using Orderingsystem.Interfaces;
 using Orderingsystem.Services;
