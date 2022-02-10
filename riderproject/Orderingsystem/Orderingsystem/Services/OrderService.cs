@@ -251,6 +251,29 @@ public class OrderService : IOrderService
         }
     }
 
+    public bool UpdateStatus(int id, string updateStatus)
+    {
+        using var connection = new MySqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
+        const string commandString = "update online_store.orders set status = @Status where oid = @id";
+        var command = new MySqlCommand(commandString, connection);
+        command.Parameters.AddWithValue("@Status", updateStatus);
+        command.Parameters.AddWithValue("@id", id);
+        
+        try
+        {
+            connection.Open();
+            command.ExecuteNonQuery();
+            return true;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return false;
+        }
+    }
+    
+    
+
     public bool DeleteOrder(int orderId)
     {
         using var connection =
@@ -259,9 +282,7 @@ public class OrderService : IOrderService
             "delete from online_store.orders_products where orders_order_id = @orderId;delete from online_store.orders where oid = @orderId;";
         var command = new MySqlCommand(commandString, connection);
         command.Parameters.AddWithValue("@orderId", orderId);
-
-
-
+        
 
         try
         {

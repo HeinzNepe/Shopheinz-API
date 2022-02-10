@@ -8,6 +8,8 @@
 //  GetOrder(id)
 //  GetUserOrder(id)
 //  CreateOrder(uid, addressId, totalPrice)
+//  UpdateStatus
+//  DeleteOrder
 
 // ProductController:
 //  GetProduct(id)

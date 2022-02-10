@@ -43,6 +43,12 @@ public class OrderController : Controller
         return _orderService.AddProductToOrder(orderId, productId, quantity);
     }
 
+    [HttpPost("update")]
+    public bool UpdateStatus(int id, string newStatus)
+    {
+        return _orderService.UpdateStatus(id, newStatus);
+    }
+
     [HttpDelete("cancel")]
     public bool DeleteOrder(int orderId)
     {
