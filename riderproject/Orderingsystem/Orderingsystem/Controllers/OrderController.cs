@@ -32,7 +32,7 @@ public class OrderController : Controller
 
 
     [HttpPost("new")]
-    public bool CreateOrder(int userId, int addressId, float totalPrice)
+    public bool CreateOrder(int userId, [FromHeader]int addressId, float totalPrice)
     {
         return _orderService.CreateOrder(userId, addressId, totalPrice);
     }
