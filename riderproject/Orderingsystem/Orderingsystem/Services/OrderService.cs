@@ -60,7 +60,7 @@ public class OrderService : IOrderService
             };
             order.TotalPrice = (float) reader["total_price"];
             order.OrderTime = (DateTime) reader["order_time"];
-            order.Status = (int) reader["status"];
+            order.Status = (string) reader["status"];
         }
 
         reader.Close();
@@ -180,7 +180,7 @@ public class OrderService : IOrderService
                 },
                 TotalPrice = (float) ordersReader["total_price"],
                 OrderTime = (DateTime) ordersReader["order_time"],
-                Status = (int) ordersReader["status"],
+                Status = (string) ordersReader["status"],
             });
         }
 
