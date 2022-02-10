@@ -1,4 +1,6 @@
-﻿using MySqlConnector;
+﻿using System.Security.Cryptography;
+using System.Text;
+using MySqlConnector;
 using Orderingsystem.Interfaces;
 using Orderingsystem.Models;
 namespace Orderingsystem.Services;
@@ -6,6 +8,26 @@ using ConfigurationManager = System.Configuration.ConfigurationManager;
 
 public class UserService : IUserService
 {
+    private static readonly Random Random = new Random();
+
+    public static string RandomString(int length)
+    {
+        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        return new string(Enumerable.Repeat(chars, length)
+            .Select(s => s[Random.Next(s.Length)]).ToArray());
+    }
+    private static string ByteArrayToString(byte[] arrInput)
+    {
+        int i;
+        var sOutput = new StringBuilder(arrInput.Length);
+        for (i = 0; i < arrInput.Length; i++) sOutput.Append(arrInput[i].ToString("X2"));
+        return sOutput.ToString();
+    }
+    
+    
+    
+    
+    
     
     public User GetUser(int id)
     {
@@ -43,20 +65,8 @@ public class UserService : IUserService
         return user;
 
     }
-
     
     
-    
-    
-    
-    private static readonly Random Random = new Random();
-
-    public static string RandomString(int length)
-    {
-        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        return new string(Enumerable.Repeat(chars, length)
-            .Select(s => s[Random.Next(s.Length)]).ToArray());
-    }
     
    
     public bool CreateUser(string firstName, string lastName, string username, string email, int phoneNumber, string pass, string pfp, int accessLevel)
@@ -67,8 +77,13 @@ public class UserService : IUserService
         const string usersString = "insert into online_store.user (email, phone_number, first_name, last_name,pfp, uusername) values (@email, @phoneNumber, @firstName, @lastName, @pfp, @username)";
         var credentialsCommand = new MySqlCommand(credentialsString, connection);
         var userCommand = new MySqlCommand(usersString, connection);
+        
+        var passBytes = Encoding.UTF8.GetBytes(pass);
+        var passHash = SHA256.Create().ComputeHash(passBytes);
+        
+        
         credentialsCommand.Parameters.AddWithValue("@username", username);
-        credentialsCommand.Parameters.AddWithValue("@pass", pass);
+        credentialsCommand.Parameters.AddWithValue("@pass", ByteArrayToString(passHash));
         credentialsCommand.Parameters.AddWithValue("@token", RandomString(64));
         credentialsCommand.Parameters.AddWithValue("@access_level", accessLevel);
         userCommand.Parameters.AddWithValue("@username", username);
