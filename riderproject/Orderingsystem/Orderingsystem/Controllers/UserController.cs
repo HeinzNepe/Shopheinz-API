@@ -17,9 +17,9 @@ public class UserController : Controller
     }
 
     [HttpGet("user")]
-    public User GetUser(int id)
+    public User GetUser(string token)
     {
-        return _userService.GetUser(id);
+        return _userService.GetUser(token);
     }
     
     [HttpPost("create")]

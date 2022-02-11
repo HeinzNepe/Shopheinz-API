@@ -29,14 +29,14 @@ public class UserService : IUserService
     
     
     
-    public User GetUser(int id)
+    public User GetUser(string token)
     {
         var user = new User();
         
         using var connection = new MySqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
-        const string commandString = "select * from online_store.user, online_store.credentials where user.uusername = credentials.username and uuid = @id";
+        const string commandString = "select * from online_store.user, online_store.credentials where user.uusername = credentials.username and credentials.token = @token";
         var command = new MySqlCommand(commandString, connection);
-        command.Parameters.AddWithValue("@id", id);
+        command.Parameters.AddWithValue("@token", token);
         
 
 

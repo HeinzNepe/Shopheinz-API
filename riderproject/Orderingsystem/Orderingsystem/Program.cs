@@ -16,7 +16,7 @@
 //  GetAllProducts()
 
 // UserController:
-//  GetUser(id)
+//  GetUser(token)
 //  CreateUser(firstName, lastName, username, email, pass, pfp, accessLevel)
 //  DeleteUser(username)
 
