@@ -19,13 +19,13 @@ public class AuthController : Controller
         _authService = authService;
     }
 
-    [HttpGet]
+    [HttpPost]
     public string VerifyCredentials([FromBody] VerifyRequest payload)
     {
         return _authService.VerifyCredentials(payload.User, payload.Pass);
     }
 
-    [HttpPost]
+    [HttpPost("update")]
     public bool UpdatePass([FromBody] UpdateCredentialsRequest payload)
     {
         return _authService.UpdatePass(payload.Token, payload.Pass, payload.NewPass);
