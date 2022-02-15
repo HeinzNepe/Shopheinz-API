@@ -22,9 +22,6 @@
 
 
 
-
-
-
 using System.Collections.Immutable;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
@@ -44,13 +41,13 @@ builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
 
-builder.WebHost.UseKestrel(serverOptions =>
+/*builder.WebHost.UseKestrel(serverOptions =>
 {
     serverOptions.Listen(IPAddress.Any, 5000, listenOptions =>
     {
         listenOptions.UseHttps(new X509Certificate2("certificate.pfx", "Passord01"));
     });
-});
+});*/
 
 builder.Services.AddCors(o => o.AddPolicy("CorsPolicy", b =>
 {
@@ -67,7 +64,7 @@ app.UseHsts();
 app.UseCors("CorsPolicy");
 // Configure the HTTP request pipeline.
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseAuthorization();
 

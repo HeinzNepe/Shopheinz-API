@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Orderingsystem.Interfaces;
 using Orderingsystem.Models;
+using Orderingsystem.Models.Requests;
 
 namespace Orderingsystem.Controllers;
 
@@ -19,15 +20,15 @@ public class AuthController : Controller
     }
 
     [HttpGet]
-    public string VerifyCredentials([FromHeader]string user, [FromHeader]string pass)
+    public string VerifyCredentials([FromBody] VerifyRequest payload)
     {
-        return _authService.VerifyCredentials(user, pass);
+        return _authService.VerifyCredentials(payload.User, payload.Pass);
     }
 
     [HttpPost]
-    public bool UpdatePass([FromHeader]string user, [FromHeader]string pass, [FromHeader]string newPass)
+    public bool UpdatePass([FromBody] UpdateCredentialsRequest payload)
     {
-        return _authService.UpdatePass(user, pass, newPass);
+        return _authService.UpdatePass(payload.Token, payload.Pass, payload.NewPass);
     }
     
 }

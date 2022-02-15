@@ -69,11 +69,11 @@ public class UserService : IUserService
     
     
    
-    public bool CreateUser(string firstName, string lastName, string username, string email, int phoneNumber, string pass, string pfp, int accessLevel)
+    public bool CreateUser(string firstName, string lastName, string username, string email, int phoneNumber, string pass, string pfp)
     {
         
         using var connection = new MySqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
-        const string credentialsString = "insert into online_store.credentials (username, password, token, access_level) values (@username, @pass, @token, @access_level)";
+        const string credentialsString = "insert into online_store.credentials (username, password, token) values (@username, @pass, @token)";
         const string usersString = "insert into online_store.user (email, phone_number, first_name, last_name,pfp, uusername) values (@email, @phoneNumber, @firstName, @lastName, @pfp, @username)";
         var credentialsCommand = new MySqlCommand(credentialsString, connection);
         var userCommand = new MySqlCommand(usersString, connection);
@@ -85,7 +85,6 @@ public class UserService : IUserService
         credentialsCommand.Parameters.AddWithValue("@username", username);
         credentialsCommand.Parameters.AddWithValue("@pass", ByteArrayToString(passHash));
         credentialsCommand.Parameters.AddWithValue("@token", RandomString(64));
-        credentialsCommand.Parameters.AddWithValue("@access_level", accessLevel);
         userCommand.Parameters.AddWithValue("@username", username);
         userCommand.Parameters.AddWithValue("@email", email);
         userCommand.Parameters.AddWithValue("@phoneNumber", phoneNumber);
