@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Orderingsystem.Interfaces;
 using Orderingsystem.Models;
+using Orderingsystem.Models.Requests;
 
 namespace Orderingsystem.Controllers;
 
@@ -31,10 +32,16 @@ public class OrderController : Controller
     }
 
 
-    [HttpPost("new")]
+    [HttpPost("new/order")]
     public bool CreateOrder(int userId, [FromHeader]int addressId, float totalPrice)
     {
         return _orderService.CreateOrder(userId, addressId, totalPrice);
+    }
+
+    [HttpPost("new/address")]
+    public int CreateAddress([FromBody] CreateAddressRequest payload)
+    {
+        return _orderService.CreateAddress(payload.AddressLine, payload.PostalNumber, payload.Country);
     }
 
     [HttpPost("link")]

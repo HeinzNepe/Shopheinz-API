@@ -7,6 +7,7 @@
 // OrderController:
 //  GetOrder(id)
 //  GetUserOrder(id)
+//  CreateAddress(id, AddressLine, PostalNumber, Country)
 //  CreateOrder(uid, addressId, totalPrice)
 //  UpdateStatus
 //  DeleteOrder

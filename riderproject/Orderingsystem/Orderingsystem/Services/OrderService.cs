@@ -187,11 +187,34 @@ public class OrderService : IOrderService
         return orders;
     }
 
+    public int CreateAddress(string addressLine, int postalNumber, string country)
+    {
+        var aid = 0;
 
-
-
-
-
+        using var connection = new MySqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);        
+        const string commandString =
+         "insert into addresses (address_line, postal_nr, country) values (@addressLine, @postalNumber, @country)";
+        const string idCommandString = "select aid from addresses where address_line = @addressLine";
+        var command = new MySqlCommand(commandString, connection);
+        var idCommand = new MySqlCommand(idCommandString, connection);
+        idCommand.Parameters.AddWithValue("@addressLine", addressLine);
+        command.Parameters.AddWithValue("@addressLine", addressLine);
+        command.Parameters.AddWithValue("@postalNumber", postalNumber);
+        command.Parameters.AddWithValue("@country", country);
+        
+        connection.Open();
+        command.ExecuteNonQuery();
+        connection.Close();
+        connection.Open();
+        using var Reader = idCommand.ExecuteReader();
+        while (Reader.Read())
+        {
+            aid = (int) Reader["aid"];
+        }
+        
+        
+        return aid;
+    }
 
 
     public bool CreateOrder(int userId, int addressId, float totalPrice)
