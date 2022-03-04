@@ -38,8 +38,6 @@ public class UserService : IUserService
         var command = new MySqlCommand(commandString, connection);
         command.Parameters.AddWithValue("@token", token);
         
-
-
         
         
         connection.Open();
@@ -62,6 +60,7 @@ public class UserService : IUserService
             };
         }
 
+        connection.Close();
         return user;
 
     }
@@ -130,5 +129,42 @@ public class UserService : IUserService
             Console.WriteLine(e);
             return false;
         }
+    }
+
+    public bool UpdateUser(string payloadToken, string? payloadFirstName, string? payloadLastName, string? payloadEmail, int? payloadPhoneNumber, string? payloadPfp)
+    {
+        var user = GetUser(payloadToken);
+        payloadFirstName ??= user.FirstName;
+        payloadLastName ??= user.LastName;
+        payloadEmail ??= user.Email;
+        payloadPhoneNumber ??= user.PhoneNumber;
+        payloadPfp ??= user.pfp;
+        
+        using var connection = new MySqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
+        const string commandString = "update online_store.user set email = @email , phone_number = @phonenumber , first_name = @firstname , last_name = @lastname , pfp = @pfp where uusername = @username";
+        var command = new MySqlCommand(commandString, connection);
+        command.Parameters.AddWithValue("@email", payloadEmail);
+        command.Parameters.AddWithValue("@phonenumber", payloadPhoneNumber);
+        command.Parameters.AddWithValue("@firstname", payloadFirstName);
+        command.Parameters.AddWithValue("@lastname", payloadLastName);
+        command.Parameters.AddWithValue("@pfp", payloadPfp);
+        command.Parameters.AddWithValue("@username", user.Credentials.Username);
+        
+
+
+
+        try
+        {
+            connection.Open();
+            command.ExecuteNonQuery();
+            return true;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return false;
+        }
+        
+
     }
 }

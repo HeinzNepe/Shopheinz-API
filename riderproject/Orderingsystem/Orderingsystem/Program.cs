@@ -20,6 +20,7 @@
 //  GetUser(token)
 //  CreateUser(firstName, lastName, username, email, pass, pfp, accessLevel)
 //  DeleteUser(username)
+//  UpdateUser(token, firstname, lastname, email, phonenumber, pfp)
 
 
 
