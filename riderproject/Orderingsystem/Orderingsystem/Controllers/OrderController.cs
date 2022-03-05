@@ -33,9 +33,9 @@ public class OrderController : Controller
 
 
     [HttpPost("new/order")]
-    public bool CreateOrder(int userId, [FromHeader]int addressId, float totalPrice)
+    public int CreateOrder([FromBody] CreateOrderRequest payload)
     {
-        return _orderService.CreateOrder(userId, addressId, totalPrice);
+        return _orderService.CreateOrder(payload.UserId, payload.AddressId, payload.TotalPrice);
     }
 
     [HttpPost("new/address")]

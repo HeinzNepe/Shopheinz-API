@@ -189,7 +189,7 @@ public class OrderService : IOrderService
 
     public int CreateAddress(string addressLine, int postalNumber, string country)
     {
-        var aid = 0;
+        var aid = new int();
 
         using var connection = new MySqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);        
         const string commandString =
@@ -206,10 +206,10 @@ public class OrderService : IOrderService
         command.ExecuteNonQuery();
         connection.Close();
         connection.Open();
-        using var Reader = idCommand.ExecuteReader();
-        while (Reader.Read())
+        using var reader = idCommand.ExecuteReader();
+        while (reader.Read())
         {
-            aid = (int) Reader["aid"];
+            aid = (int) reader["aid"];
         }
         
         
@@ -217,38 +217,49 @@ public class OrderService : IOrderService
     }
 
 
-    public bool CreateOrder(int userId, int addressId, float totalPrice)
+    public int CreateOrder(int userId, int addressId, float totalPrice)
     {
-        var order = new Order();
+        var oid = new int();
 
         using var connection =
             new MySqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
-        const string commandString =
-            "insert into online_store.orders (ouid, address_id, total_price, status) values (@userId, @addressId, @totalPrice, 0)";
+        const string commandString = "insert into online_store.orders (ouid, address_id, total_price) values (@userId, @addressId, @totalPrice)";
+        const string idCommandString = "select oid from orders where address_id = @addressId";
         var command = new MySqlCommand(commandString, connection);
+        var idCommand = new MySqlCommand(idCommandString, connection);
         command.Parameters.AddWithValue("@userId", userId);
         command.Parameters.AddWithValue("@addressId", addressId);
+        idCommand.Parameters.AddWithValue("@addressId", addressId);
         command.Parameters.AddWithValue("@totalPrice", totalPrice);
 
+        
+  
 
 
         try
         {
             connection.Open();
             command.ExecuteNonQuery();
-            return true;
+            connection.Close();
+            connection.Open();
+            using var reader = idCommand.ExecuteReader();
+            while (reader.Read())
+            {
+                oid = (int) reader["oid"];
+            }
+            return oid;
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
-            return false;
+            return 0;
         }
-
+      
+        
     }
 
     public bool AddProductToOrder(int orderId, int productId, int quantity)
     {
-        var order = new Order();
 
         using var connection =
             new MySqlConnection(ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString);
