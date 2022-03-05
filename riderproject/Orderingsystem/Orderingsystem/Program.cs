@@ -43,13 +43,13 @@ builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
 
-/*builder.WebHost.UseKestrel(serverOptions =>
+builder.WebHost.UseKestrel(serverOptions =>
 {
     serverOptions.Listen(IPAddress.Any, 5000, listenOptions =>
     {
         listenOptions.UseHttps(new X509Certificate2("certificate.pfx", "Passord01"));
     });
-});*/
+});
 
 builder.Services.AddCors(o => o.AddPolicy("CorsPolicy", b =>
 {
