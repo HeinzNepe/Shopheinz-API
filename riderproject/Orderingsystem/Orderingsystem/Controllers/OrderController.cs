@@ -45,9 +45,9 @@ public class OrderController : Controller
     }
 
     [HttpPost("link")]
-    public bool AddProductToOrder(int orderId, int productId, int quantity)
+    public bool AddProductToOrder([FromBody] AddProductToOrderRequest payload)
     {
-        return _orderService.AddProductToOrder(orderId, productId, quantity);
+        return _orderService.AddProductToOrder(payload.OrderId, payload.ProductId, payload.Quantity);
     }
 
     [HttpPost("update")]

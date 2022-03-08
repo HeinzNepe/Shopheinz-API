@@ -9,6 +9,7 @@
 //  GetUserOrder(id)
 //  CreateAddress(id, AddressLine, PostalNumber, Country)
 //  CreateOrder(uid, addressId, totalPrice)
+//  AddProductToOrder(orderId, ProductId, Quantity)
 //  UpdateStatus
 //  DeleteOrder
 
