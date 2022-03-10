@@ -30,9 +30,9 @@ public class UserController : Controller
     }
 
     [HttpDelete("delete")]
-    public bool DeleteUser(string username)
+    public bool DeleteUser([FromBody] DeleteUserRequest payload)
     {
-        return _userService.DeleteUser(username);
+        return _userService.DeleteUser(payload.Username);
     }
 
     [HttpPost("update")]
