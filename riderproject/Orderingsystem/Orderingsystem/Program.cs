@@ -46,10 +46,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 
 builder.WebHost.UseKestrel(serverOptions =>
 {
-    serverOptions.Listen(IPAddress.Any, 5000, listenOptions =>
-    {
-        listenOptions.UseHttps(new X509Certificate2("certificate.pfx", "Passord01"));
-    });
+    serverOptions.Listen(IPAddress.Any, 5000);
 });
 
 builder.Services.AddCors(o => o.AddPolicy("CorsPolicy", b =>
@@ -67,7 +64,6 @@ app.UseHsts();
 app.UseCors("CorsPolicy");
 // Configure the HTTP request pipeline.
 
-app.UseHttpsRedirection();
 
 app.UseAuthorization();
 

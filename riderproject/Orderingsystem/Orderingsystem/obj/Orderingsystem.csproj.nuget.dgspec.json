@@ -63,15 +63,15 @@
           "warn": true,
           "downloadDependencies": [
             {
-              "name": "Microsoft.AspNetCore.App.Runtime.linux-arm",
+              "name": "Microsoft.AspNetCore.App.Runtime.linux-x64",
               "version": "[6.0.0, 6.0.0]"
             },
             {
-              "name": "Microsoft.NETCore.App.Host.linux-arm",
+              "name": "Microsoft.NETCore.App.Host.linux-x64",
               "version": "[6.0.0, 6.0.0]"
             },
             {
-              "name": "Microsoft.NETCore.App.Runtime.linux-arm",
+              "name": "Microsoft.NETCore.App.Runtime.linux-x64",
               "version": "[6.0.0, 6.0.0]"
             }
           ],
@@ -87,7 +87,7 @@
         }
       },
       "runtimes": {
-        "linux-arm": {
+        "linux-x64": {
           "#import": []
         }
       }
